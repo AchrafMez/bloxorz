@@ -8,6 +8,8 @@
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 #define TILE_SIZE 1.0f
+#define LEVEL_COUNT (sizeof(levels) / sizeof(levels[0]))
+
 
 typedef struct {
     int width;
@@ -287,134 +289,188 @@ moveres checkbox(Block *b, Map *map)
     return MOVE_OK;
 }
 
-#define LEVEL_COUNT (sizeof(levels) / sizeof(levels[0]))
 #include <unistd.h>
-int main(void) {
 
 
+typedef enum {
+    STATE_MENU,
+    STATE_PLAYING
+} GameState;
+
+void DrawMenuUI(void)
+{
+    DrawText("WELCOME TO BLOXORZ", SCREEN_WIDTH/2 - 220, 120, 40, YELLOW);
+
+    DrawText("Rules:", SCREEN_WIDTH/2 - 200, 200, 25, RAYWHITE);
+    DrawText("- Move the block to the GREEN tile", SCREEN_WIDTH/2 - 200, 240, 20, LIGHTGRAY);
+    DrawText("- Falling off the map resets the level", SCREEN_WIDTH/2 - 200, 270, 20, LIGHTGRAY);
+
+    DrawText("Controls:", SCREEN_WIDTH/2 - 200, 320, 25, RAYWHITE);
+    DrawText("- I J K L : Move the block", SCREEN_WIDTH/2 - 200, 360, 20, LIGHTGRAY);
+    DrawText("- W A S D + Mouse : Move camera", SCREEN_WIDTH/2 - 200, 390, 20, LIGHTGRAY);
+    DrawText("- R : Reset level", SCREEN_WIDTH/2 - 200, 420, 20, LIGHTGRAY);
+    DrawText("- P : Pause / Menu", SCREEN_WIDTH/2 - 200, 450, 20, LIGHTGRAY);
+
+    DrawText("Press ENTER to Start", SCREEN_WIDTH/2 - 160, 520, 25, GREEN);
+}
+
+
+
+
+int main(void)
+{
     const char *levels[] = {
-    "./levels/level1.txt",
-    "./levels/level2.txt",
-    "./levels/level3.txt",
-    // "./levels/level4.txt",
-    // "./levels/level5.txt"
-};
+        "./levels/level1.txt",
+        "./levels/level2.txt",
+        "./levels/level3.txt"
+    };
 
-int currlev = 0;
+    int currlev = 0;
 
-#define LEVEL_COUNT (sizeof(levels) / sizeof(levels[0]))
-
-    
     Map map = loadmap(levels[currlev]);
-    // Map map = loadmap("./levels/level1.txt");
 
-    
-    Block block;
+    Block block = {0};
     block.pos = map.Spos;
     block.Spos = map.Spos;
     block.orient = STANDING;
     block.Tpos = block.pos;
     block.mov = false;
-    block.angle = 0.0f;
 
     Camera3D cam = {0};
     cam.position = (Vector3){10.0f, 10.0f, 10.0f};
-    cam.target = (Vector3){map.width / 2.0f, 0.0f, map.height / 2.0f};
-    cam.up = (Vector3){0.0f, 1.0f, 0.0f};
-    cam.fovy = 45.0f;
+    cam.target   = (Vector3){map.width/2.0f, 0.0f, map.height/2.0f};
+    cam.up       = (Vector3){0, 1, 0};
+    cam.fovy     = 45.0f;
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Bloxorz");
     DisableCursor();
     SetTargetFPS(60);
 
     bool won = false;
+    bool fail = false;
 
-    while (!WindowShouldClose()) {
-        UpdateCamera(&cam, CAMERA_FIRST_PERSON);
-        
+    GameState state = STATE_MENU;
+
+    while (!WindowShouldClose())
+    {
         float dt = GetFrameTime();
-
-        if (!block.mov && !won) {
-            moveres result = MOVE_OK;
-            
-            if (IsKeyPressed(KEY_I)) result = movebox(&block, &map, 0, -1);
-            else if (IsKeyPressed(KEY_K)) result = movebox(&block, &map, 0, 1);
-            else if (IsKeyPressed(KEY_J)) result = movebox(&block, &map, -1, 0);
-            else if (IsKeyPressed(KEY_L)) result = movebox(&block, &map, 1, 0);
-            else if (IsKeyPressed(KEY_R)) {
-                printf("\n reseeeet\n\n");
-                block.pos = map.Spos;
-                block.Spos = map.Spos;
-                block.orient = STANDING;
-                block.mov = false;
-                won = false;
-            }
-            
-            if (result == MOVE_FALL) {
-                printf("=== failed resting agian -----\n\n");
-                block.pos = map.Spos;
-                block.Spos = map.Spos;
-                block.orient = STANDING;
-                block.mov = false;
-            }
+        if (state == STATE_MENU)
+        {
+            if (IsKeyPressed(KEY_ENTER))
+                state = STATE_PLAYING;
         }
-        
-        updateblox(&block, dt);
+        else if (state == STATE_PLAYING)
+        {
+            if (IsKeyPressed(KEY_P))
+                state = STATE_MENU;
 
-        if (!block.mov && !won) {
-            moveres result = checkbox(&block, &map);
-            
-            if (result == MOVE_FALL) {
-                // DrawText("you fail", SCREEN_WIDTH / 2 - 100, 220, 30, RED);
-                // DrawText("press r to retry", SCREEN_WIDTH / 2 - 120, 270, 20, GRAY);
-            printf("=== failed resting agian -----\n\n");
+            UpdateCamera(&cam, CAMERA_FIRST_PERSON);
+
+            if (!block.mov && !won && !fail)
+            {
+                moveres res = MOVE_OK;
+
+                if (IsKeyPressed(KEY_I)) res = movebox(&block, &map, 0, -1);
+                else if (IsKeyPressed(KEY_K)) res = movebox(&block, &map, 0, 1);
+                else if (IsKeyPressed(KEY_J)) res = movebox(&block, &map, -1, 0);
+                else if (IsKeyPressed(KEY_L)) res = movebox(&block, &map, 1, 0);
+                else if (IsKeyPressed(KEY_R))
+                {
+                    fail = false;
+                    won = false;
+                    block.pos = map.Spos;
+                    block.Spos = map.Spos;
+                    block.orient = STANDING;
+                    block.mov = false;
+                }
+
+                if (res == MOVE_FALL)
+                    fail = true;
+            }
+            if(!fail)
+                updateblox(&block, dt);
+
+            if (!block.mov && !won && !fail)
+            {
+                moveres chk = checkbox(&block, &map);
+
+                if (chk == MOVE_FALL)
+                    fail = true;
+                else if (chk == MOVE_WIN)
+                    won = true;
+            }
+
+            if (won && IsKeyPressed(KEY_ENTER))
+            {
+                currlev++;
+                if (currlev >= LEVEL_COUNT)
+                    currlev = 0;
+
+                fail = false;
+                won = false;
+                map = loadmap(levels[currlev]);
                 block.pos = map.Spos;
                 block.Spos = map.Spos;
                 block.orient = STANDING;
                 block.mov = false;
-            }
-            else if (result == MOVE_WIN) {
-                printf("rbe7ti zaba\n\n");
-                won = true;
             }
         }
 
         BeginDrawing();
         ClearBackground(BLACK);
-        
-        BeginMode3D(cam);
-        drawMap(map, TILE_SIZE);
-        drawbox(&block);
-        EndMode3D();
-        
-        DrawText("Controls: ijkl to move, R to reset", 10, 35, 20, WHITE);
-        
-        if (won) {
-            DrawText("YOU WIN!", SCREEN_WIDTH/2 - 100, SCREEN_HEIGHT/2 - 40, 40, YELLOW);
-            DrawText("Press ENTER for next level", SCREEN_WIDTH/2 - 180, SCREEN_HEIGHT/2 + 10, 20, RAYWHITE);
 
-        if(IsKeyPressed(KEY_ENTER)) {
-        currlev++;
+        if (state == STATE_MENU)
+        {
+            DrawMenuUI();
+        }
+        else
+        {
+            BeginMode3D(cam);
+            drawMap(map, TILE_SIZE);
+            drawbox(&block);
+            EndMode3D();
 
-        if (currlev >= LEVEL_COUNT) {
-                DrawText("congratulation you finished the game!", SCREEN_WIDTH/2 - 100, SCREEN_HEIGHT/2 - 40, 40, YELLOW);
-                usleep(50000);
+            DrawText("IJKL Move | P Menu | R Reset", 10, 10, 20, WHITE);
+                if(fail){
+                    if(IsKeyPressed(KEY_R))
+                    {
+                        block.pos = map.Spos;
+                            block.Spos = map.Spos;
+                            block.orient = STANDING;
+                            block.mov = false;
+                            fail = false;
+                    }
+                const char *failText = "YOU FAIL!";
+                const char *failHint = "Press R to retry";
+
+                int failS = 40;
+                int hintS = 20;
+
+                int centerY = SCREEN_HEIGHT / 2;
+
+                DrawText(failText, (SCREEN_WIDTH - MeasureText(failText, failS))/2, centerY - 40, failS, RED);
+                DrawText(failHint, (SCREEN_WIDTH - MeasureText(failHint, hintS))/2, centerY + 10, hintS, RAYWHITE);
         }
 
-        map = loadmap(levels[currlev]);
+            if (won)
+            {
+                const char *winText = "YOU WIN!";
+                const char *winHint = "Press ENTER for next level";
 
-        block.pos = map.Spos;
-        block.Spos = map.Spos;
-        block.orient = STANDING;
-        block.mov    = false;
-        won = false;
-    }
-}
+                int winS = 40;
+                int hintS = 20;
 
-        
-        EndDrawing();
-    }
+                int centerY = SCREEN_HEIGHT / 2;
+
+                DrawText(winText, (SCREEN_WIDTH - MeasureText(winText, winS))/2, centerY - 40, winS, YELLOW);
+                DrawText(winHint, (SCREEN_WIDTH - MeasureText(winHint, hintS))/2, centerY + 10, hintS, RAYWHITE);
+            }
+
+        }
     
+        EndDrawing();
+
+    }
     CloseWindow();
     return 0;
 }
