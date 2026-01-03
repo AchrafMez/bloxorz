@@ -1,0 +1,24 @@
+===========================================
+      BLOXORZ - GAME STATISTICS
+===========================================
+
+Level 0: 0 moves, 1.02 seconds
+Level 1: 0 moves, 0.13 seconds
+Level 2: 0 moves, 0.45 seconds
+Level 3: 0 moves, 0.25 seconds
+Level 4: 0 moves, 0.27 seconds
+Level 5: 0 moves, 0.37 seconds
+Level 6: 0 moves, 0.30 seconds
+Level 7: 0 moves, 0.23 seconds
+Level 8: 0 moves, 0.18 seconds
+Level 9: 0 moves, 0.25 seconds
+Level 10: 0 moves, 0.47 seconds
+Level 11: 0 moves, 0.43 seconds
+Level 12: 0 moves, 0.28 seconds
+
+-------------------------------------------
+TOTAL: 0 moves, 4.64 seconds
+===========================================
+
+You can contribute with you stats to:
+https://github.com/AchrafMez/bloxorz

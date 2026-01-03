@@ -11,7 +11,6 @@ int main(void){
     int winWidth = mWidth;
     int winHeight = mHeight;
     int currlev = 0;
-    int switchCount = 0;
     
     InitWindow(winWidth, winHeight, "Bloxorz");
     ToggleFullscreen();
@@ -21,7 +20,7 @@ int main(void){
 
     SetAudioStreamBufferSizeDefault(16384);
     InitAudioDevice();
-    Music bgm = LoadMusicStream("/Users/amezioun/Desktop/bloxorz/assets/theme.mp3");
+    Music bgm = LoadMusicStream("./assets/theme.mp3");
     bgm.looping = true;
     SetMusicVolume(bgm, 0.2f);
     PlayMusicStream(bgm);
@@ -56,7 +55,7 @@ int main(void){
 
     bool won = false;
     bool fail = false;
-    bool showFinalStats = false;
+    // bool showFinalStats = false;
 
     GameState state = STATE_MENU;
     GameStats stats = {0};
@@ -191,7 +190,6 @@ int main(void){
                 }
                 else if (IsKeyPressed(KEY_RIGHT)) {
                     // PlaySound(move);
-
                     res = movebox(&block, &map, 1, 0);
                     moved = true;
                 }
@@ -232,11 +230,11 @@ int main(void){
             if (won && IsKeyPressed(KEY_ENTER)){
                 saveLevState(&stats, currlev);
                 currlev++;
-                if (currlev >= LEVEL_COUNT) {
-                    showFinalStats = true;
+                // if (currlev >= LEVEL_COUNT) {
+                    // showFinalStats = true;
                     // state = STATE_FINAL;
                     // currlev = 0;
-                } else {
+                // } else {
                     fail = false;
                     won = false;
                     map = loadmap(levels[currlev]);
@@ -258,7 +256,7 @@ int main(void){
                     animCam = false;
                     
                     resetCurrLev(&stats);
-                }
+                // }
             }
             if (fail && IsKeyPressed(KEY_R)) {
                 resetSB(&map);
@@ -282,7 +280,7 @@ int main(void){
 
             
             if (IsKeyPressed(KEY_ENTER)) {
-                showFinalStats = false;
+                // showFinalStats = false;
                 state = STATE_PLAYING;
     
                 currlev = 0;

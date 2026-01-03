@@ -1,5 +1,5 @@
 #pragma once
-#include "/Users/amezioun/.brew/include/raylib.h"
+#include "raylib.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,7 +72,9 @@ typedef struct {
     bool hard;
     char bridgeId;
 } SwitchDef;
-SwitchDef switches[32];
+// extern SwitchDef switches[32];
+// extern    int switchCount;
+
 
 typedef struct {
     int moves;
