@@ -2,7 +2,7 @@
 
 A puzzle game where you roll a block to reach the target tile. Built with C and Raylib.
 
-![bloxorz]([assets/bloxorz.gif](https://github.com/AchrafMez/bloxorz/blob/master/assets/bloxorz.gif))
+![bloxorz](assets/bloxorz.gif)
 
 ## About
 
