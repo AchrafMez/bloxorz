@@ -1,0 +1,6 @@
+.......FFFF..FFF.
+.FFFF..FF1F..FTF.
+.FFAF..FFFF..FFF.
+.SFFFaaFFFF..FFF.
+.FFFF..FFFFbbFFF.
+.FFFF..FFFF......

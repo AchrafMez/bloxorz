@@ -1,0 +1,15 @@
+
+.................
+.................
+.FFF....FFFFFFFF.
+.FSFFFFFFFFF..FF.
+.FFF....FF....FF.
+.............FOF.
+.............FF..
+.FFF..OOOOF..0O..
+.FTFOOOOOOO..FFF.
+.FFFOOOOOOOOOFFF.
+......OOOOOOOFFF.
+........aFF......
+................
+

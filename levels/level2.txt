@@ -1,0 +1,10 @@
+-----FFFFFF
+-----F--FFF
+-----F--FFFFF
+SFFFFF-----FFFF
+----FFF----FFTF
+----FFF-----FFF
+------F--FF
+------FFFFF
+------FFFFF
+-------FFF
