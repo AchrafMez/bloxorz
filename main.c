@@ -663,10 +663,26 @@ int main(void){
     "./levels/level5.txt","./levels/level6.txt","./levels/level7.txt",
     "./levels/level8.txt","./levels/level9.txt","./levels/level10.txt",
     "./levels/level11.txt","./levels/level12.txt", "./levels/level12.txt"};
+    int mWidth = GetMonitorWidth(0);
+    int mHeight = GetMonitorHeight(0);
+    int winWidth = mWidth;
+    int winHeight = mHeight;
     int currlev = 0;
+    InitWindow(winWidth, winHeight, "Bloxorz");
+    ToggleFullscreen();
+    DisableCursor();
+
+
+
+    SetAudioStreamBufferSizeDefault(16384);
+    InitAudioDevice();
+    Music bgm = LoadMusicStream("/Users/amezioun/Desktop/bloxorz/assets/theme.wav");
+    bgm.looping = true;
+    SetMusicVolume(bgm, 0.25f);
+    PlayMusicStream(bgm);
+
 
     Map map = loadmap(levels[currlev]);
-
     Block block = {0};
     block.pos = map.Spos;
     block.Spos = map.Spos;
@@ -674,15 +690,9 @@ int main(void){
     block.Tpos = block.pos;
     block.mov = false;
 
-    int mWidth = GetMonitorWidth(0);
-    int mHeight = GetMonitorHeight(0);
-    int winWidth = mWidth;
-    int winHeight = mHeight;
 
-    InitWindow(winWidth, winHeight, "Bloxorz");
-    ToggleFullscreen();
-    DisableCursor();
     SetTargetFPS(60);
+
 
     float mapCenterX = map.width / 2.0f;
     float mapCenterZ = map.height / 2.0f;
@@ -714,6 +724,7 @@ int main(void){
     Vector3 baseCamTarget = cam.target;
 
     while (!WindowShouldClose()){
+        UpdateMusicStream(bgm);
         if (animCam){
             animT += GetFrameTime();
 
@@ -868,7 +879,7 @@ int main(void){
                 currlev++;
                 if (currlev >= LEVEL_COUNT) {
                     showFinalStats = true;
-                    state == STATE_FINAL;
+                    state = STATE_FINAL;
                     // currlev = 0;
                 } else {
                     fail = false;
@@ -1015,7 +1026,8 @@ int main(void){
         }
         EndDrawing();
     }
-    
+    UnloadMusicStream(bgm);
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
