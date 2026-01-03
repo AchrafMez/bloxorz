@@ -36,11 +36,12 @@ and but what makes the puzzle more challenging is to win with the minimum moves 
 ## Contributing
 
 ### Share Your Stats
-1. Complete all levels
-2. And press `S` to save you stats
-3. Fork this repo
-4. Check stats file is exist inside `stats/` directory
-5. Create a Pull Request
+1. Fork this repo
+2. Clone your fork: `git clone https://github.com/username/bloxorz.git && cd bloxorz && make run`
+3. Complete all levels
+4. And press `S` to save you stats
+5. git add stats/ commit and push
+6. Create a Pull Request
    
 `Note that i create a minimum time and moves possiblity on all levels so no one can cheat !`
 
