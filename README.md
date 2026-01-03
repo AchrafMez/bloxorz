@@ -65,5 +65,4 @@ cd bloxorz
 make run
 ```
 you can run `make help` to see all make commands
-
 ---

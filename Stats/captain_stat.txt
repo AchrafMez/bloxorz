@@ -19,6 +19,3 @@ Level 12: 0 moves, 0.28 seconds
 -------------------------------------------
 TOTAL: 0 moves, 4.64 seconds
 ===========================================
-
-You can contribute with you stats to:
-https://github.com/AchrafMez/bloxorz

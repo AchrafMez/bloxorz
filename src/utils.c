@@ -134,8 +134,8 @@ void exportState(GameStats stats) {
     fprintf(file, "\n-------------------------------------------\n");
     fprintf(file, "TOTAL: %d moves, %.2f seconds\n", totalMoves, totalTime);
     fprintf(file, "===========================================\n");
-    fprintf(file, "\nYou can contribute with you stats to:\n");
-    fprintf(file, "https://github.com/AchrafMez/bloxorz\n");
+    // fprintf(file, "\nYou can contribute with you stats to:\n");
+    // fprintf(file, "https://github.com/AchrafMez/bloxorz\n");
     
     fclose(file);
 }

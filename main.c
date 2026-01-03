@@ -168,11 +168,6 @@ int main(void){
             {
                 moveres res = MOVE_OK;
                 bool moved = false;
-                
-                if(IsKeyPressed(KEY_N)){
-                    // PlaySound(move);
-                    won = true;
-                }
                 if (IsKeyPressed(KEY_UP)){
                     // PlaySound(move);
                     res = movebox(&block, &map, 0, -1);
@@ -234,7 +229,7 @@ int main(void){
                     // showFinalStats = true;
                     // state = STATE_FINAL;
                     // currlev = 0;
-                // } else {
+                // } 
                     fail = false;
                     won = false;
                     map = loadmap(levels[currlev]);
@@ -256,6 +251,8 @@ int main(void){
                     animCam = false;
                     
                     resetCurrLev(&stats);
+                    // if(currlev >= 12)
+                        // state = STATE_FINAL;
                 // }
             }
             if (fail && IsKeyPressed(KEY_R)) {
@@ -281,6 +278,7 @@ int main(void){
             
             if (IsKeyPressed(KEY_ENTER)) {
                 // showFinalStats = false;
+                // if(currlev )
                 state = STATE_PLAYING;
     
                 currlev = 0;
@@ -348,12 +346,15 @@ int main(void){
             }
 
             if (won) {  
+                if(currlev >= 12)
+                    state = STATE_FINAL;
                 if (!animCam){
                     animCam = true;
                     animT = 0.0f;
                     initCamPos = cam.position;
                     tarCamPos = (Vector3){cam.position.x, cam.position.y + 10.0f, cam.position.z - 10.0f};
                 }
+                
                 
                 const char *winText = "YOU WIN!";
                 const char *winHint = "Press ENTER for next level";
@@ -373,8 +374,7 @@ int main(void){
                 snprintf(statsText, sizeof(statsText), "Completed in %d moves, %.1fs", 
                 stats.currentMoves, stats.currentTime);
                 DrawText(statsText, (currWidth - MeasureText(statsText, 18)) / 2, centerY + 50, 18, SKYBLUE);
-                if(currlev >= LEVEL_COUNT)
-                    state = STATE_FINAL;
+                
             }
         }
         EndDrawing();
