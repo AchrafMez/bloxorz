@@ -2,20 +2,20 @@
       BLOXORZ - GAME STATISTICS
 ===========================================
 
-Level 0: 0 moves, 1.02 seconds
-Level 1: 0 moves, 0.13 seconds
-Level 2: 0 moves, 0.45 seconds
-Level 3: 0 moves, 0.25 seconds
-Level 4: 0 moves, 0.27 seconds
-Level 5: 0 moves, 0.37 seconds
-Level 6: 0 moves, 0.30 seconds
-Level 7: 0 moves, 0.23 seconds
-Level 8: 0 moves, 0.18 seconds
-Level 9: 0 moves, 0.25 seconds
-Level 10: 0 moves, 0.47 seconds
-Level 11: 0 moves, 0.43 seconds
-Level 12: 0 moves, 0.28 seconds
+Level 0: 8 moves, 0.92 seconds
+Level 1: 25 moves, 3.48 seconds
+Level 2: 40 moves, 4.37 seconds
+Level 3: 35 moves, 3.87 seconds
+Level 4: 32 moves, 4.65 seconds
+Level 5: 51 moves, 9.35 seconds
+Level 6: 87 moves, 12.42 seconds
+Level 7: 48 moves, 10.13 seconds
+Level 8: 49 moves, 13.18 seconds
+Level 9: 76 moves, 18.12 seconds
+Level 10: 71 moves, 16.08 seconds
+Level 11: 47 moves, 15.38 seconds
+Level 12: 157 moves, 34.62 seconds
 
 -------------------------------------------
-TOTAL: 0 moves, 4.64 seconds
+TOTAL: 726 moves, 146.58 seconds
 ===========================================

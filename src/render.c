@@ -73,6 +73,10 @@ void drawMen(void){
     const char *reset = "R - Reset level    |    P - Pause/Menu";
     DrawText(reset, controlsX, start, 22, LIGHTGRAY);
     
+    start += 40;
+    const char *song = "M - Pause or Play Song";
+    DrawText(song, controlsX, start, 22, LIGHTGRAY);
+
     start += 70;
     const char *tilesTitle = "Tile Types:";
     DrawText(tilesTitle, centerX - MeasureText(tilesTitle, ruleSize) / 2, start, ruleSize, RAYWHITE);

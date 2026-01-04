@@ -1,22 +1,16 @@
 #include "./inc/Define.h"
 
 int main(void){
-    const char *levels[] = {"./levels/level0.txt", "./levels/level1.txt",
-    "./levels/level2.txt","./levels/level3.txt","./levels/level4.txt",
-    "./levels/level5.txt","./levels/level6.txt","./levels/level7.txt",
-    "./levels/level8.txt","./levels/level9.txt","./levels/level10.txt",
-    "./levels/level11.txt","./levels/level12.txt", "./levels/level12.txt"};
+    const char *levels[] = {"./levels/level0.txt", "./levels/level1.txt","./levels/level2.txt","./levels/level3.txt","./levels/level4.txt","./levels/level5.txt","./levels/level6.txt","./levels/level7.txt","./levels/level8.txt","./levels/level9.txt","./levels/level10.txt","./levels/level11.txt","./levels/level12.txt"};
     int mWidth = GetMonitorWidth(0);
     int mHeight = GetMonitorHeight(0);
     int winWidth = mWidth;
     int winHeight = mHeight;
     int currlev = 0;
-    
+    bool song = true;
     InitWindow(winWidth, winHeight, "Bloxorz");
     ToggleFullscreen();
     DisableCursor();
-
-
 
     SetAudioStreamBufferSizeDefault(16384);
     InitAudioDevice();
@@ -24,8 +18,6 @@ int main(void){
     bgm.looping = true;
     SetMusicVolume(bgm, 0.2f);
     PlayMusicStream(bgm);
-
-
     // Sound move = LoadSound("/Users/amezioun/Desktop/bloxorz/assets/move.wav");
     // SetSoundVolume(move, 0.3f);
 
@@ -36,10 +28,7 @@ int main(void){
     block.orient = STANDING;
     block.Tpos = block.pos;
     block.mov = false;
-
-
     SetTargetFPS(60);
-
 
     float mapCenterX = map.width / 2.0f;
     float mapCenterZ = map.height / 2.0f;
@@ -55,7 +44,6 @@ int main(void){
 
     bool won = false;
     bool fail = false;
-    // bool showFinalStats = false;
 
     GameState state = STATE_MENU;
     GameStats stats = {0};
@@ -102,33 +90,39 @@ int main(void){
                 
                 float moveSpeed = 0.005f;
                 
-                if (IsKeyDown(KEY_W)) {
+                if (IsKeyDown(KEY_W)){
                     cam.position.x += forward.x * moveSpeed;
                     cam.position.z += forward.z * moveSpeed;
                     cam.target.x += forward.x * moveSpeed;
                     cam.target.z += forward.z * moveSpeed;
                 }
-                if (IsKeyDown(KEY_S)) {
+                if (IsKeyDown(KEY_S)){
                     cam.position.x -= forward.x * moveSpeed;
                     cam.position.z -= forward.z * moveSpeed;
                     cam.target.x -= forward.x * moveSpeed;
                     cam.target.z -= forward.z * moveSpeed;
                 }
-                if (IsKeyDown(KEY_A)) {
+                if (IsKeyDown(KEY_A)){
                     cam.position.x += right.x * moveSpeed;
                     cam.position.z += right.z * moveSpeed;
                     cam.target.x += right.x * moveSpeed;
                     cam.target.z += right.z * moveSpeed;
                 }
-                if (IsKeyDown(KEY_D)) {
+                if (IsKeyDown(KEY_D)){
                     cam.position.x -= right.x * moveSpeed;
                     cam.position.z -= right.z * moveSpeed;
                     cam.target.x -= right.x * moveSpeed;
                     cam.target.z -= right.z * moveSpeed;
                 }
-                
+                if (IsKeyDown(KEY_M)){
+                    song = !song;
+                    if(song == true)
+                        PauseMusicStream(bgm);
+                    else
+                        ResumeMusicStream(bgm);
+                }
+
                 Vector2 mouseDelta = GetMouseDelta();
-                
                 mouseDelta.x *= 0.003f;
                 mouseDelta.y *= 0.003f;
                 
@@ -152,20 +146,18 @@ int main(void){
                 
                 float minDist = maxDim * 0.8f;
                 float maxDist = maxDim * 2.0f;
-                if (radius < minDist || radius > maxDist) {
+                if (radius < minDist || radius > maxDist){
                     radius = fmaxf(minDist, fminf(maxDist, radius));
                     cam.position.x = cam.target.x + radius * cosf(angleY) * cosf(angleXZ);
                     cam.position.y = cam.target.y + radius * sinf(angleY);
                     cam.position.z = cam.target.z + radius * cosf(angleY) * sinf(angleXZ);
                 }
-                
                 float padding = maxDim * 0.3f;
                 cam.target.x = fmaxf(-padding, fminf(map.width + padding, cam.target.x));
                 cam.target.z = fmaxf(-padding, fminf(map.height + padding, cam.target.z));
             }
 
-            if (!block.mov && !won && !fail)
-            {
+            if (!block.mov && !won && !fail){
                 moveres res = MOVE_OK;
                 bool moved = false;
                 if (IsKeyPressed(KEY_UP)){
@@ -178,12 +170,12 @@ int main(void){
                     res = movebox(&block, &map, 0, 1);
                     moved = true;
                 }
-                else if (IsKeyPressed(KEY_LEFT)) {
+                else if (IsKeyPressed(KEY_LEFT)){
                     res = movebox(&block, &map, -1, 0);
                     // PlaySound(move);
                     moved = true;
                 }
-                else if (IsKeyPressed(KEY_RIGHT)) {
+                else if (IsKeyPressed(KEY_RIGHT)){
                     // PlaySound(move);
                     res = movebox(&block, &map, 1, 0);
                     moved = true;
@@ -201,35 +193,27 @@ int main(void){
                     cam.target = baseCamTarget;
                     resetCurrLev(&stats);
                 }
-
-                if (moved && res != MOVE_FALL) {
-                    incMoves(&stats);
-                }
-
-                if (res == MOVE_FALL)
-                    fail = true;
+                if (moved && res != MOVE_FALL) incMoves(&stats);
+                if (res == MOVE_FALL) fail = true;
             }
-            
-            // if(!fail)
-                updateblox(&block, dt);
+            updateblox(&block, dt);
 
             if (!block.mov && !won && !fail){
                 moveres chk = checkbox(&block, &map);
-
-                if (chk == MOVE_FALL)
-                    fail = true;
-                else if (chk == MOVE_WIN)
-                    won = true;
+                if (chk == MOVE_FALL) fail = true;
+                else if (chk == MOVE_WIN) won = true;
             }
 
             if (won && IsKeyPressed(KEY_ENTER)){
                 saveLevState(&stats, currlev);
                 currlev++;
-                // if (currlev >= LEVEL_COUNT) {
-                    // showFinalStats = true;
-                    // state = STATE_FINAL;
-                    // currlev = 0;
-                // } 
+                 if (currlev >= LEVEL_COUNT){
+                    state = STATE_FINAL;
+                    won = false;
+                    fail = false;
+                    while (IsKeyDown(KEY_ENTER)){BeginDrawing();EndDrawing();}
+                    continue;
+                }
                     fail = false;
                     won = false;
                     map = loadmap(levels[currlev]);
@@ -251,9 +235,6 @@ int main(void){
                     animCam = false;
                     
                     resetCurrLev(&stats);
-                    // if(currlev >= 12)
-                        // state = STATE_FINAL;
-                // }
             }
             if (fail && IsKeyPressed(KEY_R)) {
                 resetSB(&map);
@@ -275,12 +256,8 @@ int main(void){
         if (state == STATE_FINAL) {
             DrawFinalStatsScreen(stats);
 
-            
             if (IsKeyPressed(KEY_ENTER)) {
-                // showFinalStats = false;
-                // if(currlev )
-                state = STATE_PLAYING;
-    
+                state = STATE_PLAYING;    
                 currlev = 0;
                 fail = false;
                 won = false;
@@ -310,8 +287,7 @@ int main(void){
         }
         else if (state == STATE_MENU)
             drawMen();
-        else
-        {
+        else{
             BeginMode3D(cam);
             drawMap(map, TILE_SIZE);
             drawbox(&block);
@@ -346,15 +322,12 @@ int main(void){
             }
 
             if (won) {  
-                if(currlev >= 12)
-                    state = STATE_FINAL;
                 if (!animCam){
                     animCam = true;
                     animT = 0.0f;
                     initCamPos = cam.position;
                     tarCamPos = (Vector3){cam.position.x, cam.position.y + 10.0f, cam.position.z - 10.0f};
                 }
-                
                 
                 const char *winText = "YOU WIN!";
                 const char *winHint = "Press ENTER for next level";
@@ -374,7 +347,6 @@ int main(void){
                 snprintf(statsText, sizeof(statsText), "Completed in %d moves, %.1fs", 
                 stats.currentMoves, stats.currentTime);
                 DrawText(statsText, (currWidth - MeasureText(statsText, 18)) / 2, centerY + 50, 18, SKYBLUE);
-                
             }
         }
         EndDrawing();
