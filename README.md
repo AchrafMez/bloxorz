@@ -2,7 +2,7 @@
 
 A puzzle game where you roll a block to reach the target tile. Built with C and Raylib.
 
-![bloxorz](assets/bloxorz.gif)
+![bloxorz](assets/level2.png)
 
 ## About
 
@@ -22,6 +22,7 @@ and but what makes the puzzle more challenging is to win with the minimum moves 
 - `R` - Reset level
 - `P` - Menu
 - `S` - Save stats (after completing all levels)
+- `M` - Pause or Resume song
 
 ## Game Rules
 
