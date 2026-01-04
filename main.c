@@ -22,7 +22,7 @@ int main(void){
     // SetSoundVolume(move, 0.3f);
 
     Map map = loadmap(levels[currlev]);
-    Block block = {0};
+    Block block = {{0}};
     block.pos = map.Spos;
     block.Spos = map.Spos;
     block.orient = STANDING;
@@ -36,7 +36,7 @@ int main(void){
     if (maxDim < 8.0f) maxDim = 8.0f;
     float camDistance = maxDim * 1.2f;
 
-    Camera3D cam = {0};
+    Camera3D cam = {{0}};
     cam.position = (Vector3){mapCenterX + camDistance * 0.7f, camDistance * 0.8f, mapCenterZ + camDistance * 0.7f};
     cam.target = (Vector3){mapCenterX, 0.0f, mapCenterZ};
     cam.up = (Vector3){0, 1, 0};
