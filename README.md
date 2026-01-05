@@ -33,7 +33,7 @@ and but what makes the puzzle more challenging is to win with the minimum moves 
 - Orange - Weak tile (can't stand vertically on it).
 - Light blue - Soft Switch (activates bridges), you can stand any way.
 - Dark blue - Hard Switch you can stand only vertically.
-
+<!-- 
 ## Contributing
 
 ### Share Your Stats
@@ -51,14 +51,14 @@ See [LEADERBOARD.md](LEADERBOARD.md) for top scores.
 ### Create Levels
 Design new levels using the text format in `levels/` directory.
 
-- `F`       ---> Floor
-- `S`       ---> Box Start position
-- `T`       ---> Target Square
-- `O`       ---> Orange Tile
-- `a - z`   ---> Bridges
-- `A - Z`   ---> Soft Switch
-- `0 - 9`   ---> Hars Swoitch
-- any other other character consider as empty space
+- `F`       --- Floor
+- `S`       --- Box Start position
+- `T`       --- Target Square
+- `O`       --- Orange Tile
+- `a - z`   --- Bridges
+- `A - Z`   --- Soft Switch
+- `0 - 9`   --- Hars Swoitch
+- any other other character consider as empty space -->
 
 ## Run 
 ```bash
