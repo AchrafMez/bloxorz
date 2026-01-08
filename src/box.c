@@ -21,11 +21,34 @@ void updateblox(Block *b, float dt){
     }
 }
 
-moveres checkbox(Block *b, Map *map){
+bool checklimit(GameMode mode, GameStats stats, int currentLevel) {
+    if (mode.Diff == NORMAL) {
+        return false; 
+    }
+    
+    const LevLimits *constraints = (mode.Diff == MEDIUM) 
+        ? &mediumMode[currentLevel] 
+        : &hardMode[currentLevel];
+    
+    if (stats.currentMoves >= constraints->moveLimit) {
+        return true;
+    }
+    
+    if (stats.currentTime >= constraints->timeLimit) {
+        return true;
+    }
+    
+    return false;
+}
+
+                // moveres chk = checkbox(&block, &map, &gameMode, &stats, &currlev);
+
+
+moveres checkbox(Block *b, Map *map, GameMode *mode, GameStats *stats, int *currentLevel){
     int x1, z1, x2, z2;
     gettile(b, &x1, &z1, &x2, &z2);
 
-    if (!solid(&map->tiles[z1][x1]) || !solid(&map->tiles[z2][x2]))
+    if (!solid(&map->tiles[z1][x1]) || !solid(&map->tiles[z2][x2]) || checklimit(*mode, *stats, *currentLevel))
         return MOVE_FALL;
 
       if (b->orient == STANDING){

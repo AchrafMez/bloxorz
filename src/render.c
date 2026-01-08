@@ -45,79 +45,174 @@ void drawbox(Block *b) {
     DrawCubeWires(b->pos, size.x, size.y, size.z, BLACK);
 }
 
+void DrawDiffMenu(GameMode *mode){
+    float swidth = (float)GetScreenWidth();
+    float sheight = (float)GetScreenHeight();
+    float centerX = swidth * 0.5f;
+
+    int Tsize = (int)(sheight * 0.04f);
+    int mdsize  = (int)(sheight * 0.035f);
+    int descSize  = (int)(sheight * 0.025f);
+
+    float ttdesc = sheight * 0.048f;
+    float descgap = sheight * 0.035f;
+    float blockgap= sheight * 0.065f;
+
+    const char *title = "SELECT DIFFICULTY";
+    DrawText(title, centerX - MeasureText(title, Tsize) / 2, sheight * 0.08f, Tsize, YELLOW);
+
+    float textStartX = swidth * 0.25f; 
+    float currentY   = sheight * 0.25f; 
+
+    Color normalColor = (mode->Diff == NORMAL) ? YELLOW : WHITE;
+    DrawText("1. NORMAL MODE", (int)textStartX, (int)currentY, mdsize, normalColor);
+
+    currentY += ttdesc;
+    DrawText("- No restrictions", (int)textStartX, (int)currentY, descSize, LIGHTGRAY);
+    currentY += descgap;
+    DrawText("- Full camera control", (int)textStartX, (int)currentY, descSize, LIGHTGRAY);
+    currentY += descgap;
+    DrawText("- Take your time", (int)textStartX, (int)currentY, descSize, LIGHTGRAY);
+
+    currentY += blockgap;
+
+    Color mediumColor = (mode->Diff == MEDIUM) ? YELLOW : WHITE;
+    DrawText("2. MEDIUM MODE", (int)textStartX, (int)currentY, mdsize, mediumColor);
+
+    currentY += ttdesc;
+    DrawText("- Time and move limits", (int)textStartX, (int)currentY, descSize, ORANGE);
+    currentY += descgap;
+    DrawText("- Faster block movement", (int)textStartX, (int)currentY, descSize, ORANGE);
+    currentY += descgap;
+    DrawText("- Full camera control", (int)textStartX, (int)currentY, descSize, LIGHTGRAY);
+
+    currentY += blockgap;
+
+    Color hardColor = (mode->Diff == HARD) ? YELLOW : WHITE;
+    DrawText("3. HARD MODE", (int)textStartX, (int)currentY, mdsize, hardColor);
+
+    currentY += ttdesc;
+    DrawText("- Tight time and move limits", (int)textStartX, (int)currentY, descSize, RED);
+    currentY += descgap;
+    DrawText("- Faster block movement", (int)textStartX, (int)currentY, descSize, RED);
+    currentY += descgap;
+    DrawText("- NO camera control", (int)textStartX, (int)currentY, descSize, RED);
+    currentY += descgap;
+    DrawText("- Random camera angle on each move!", (int)textStartX, (int)currentY, descSize, RED);
+
+    const char *use = "Use 1, 2, 3 to select | Press ENTER to start";
+    DrawText(use, centerX - MeasureText(use, descSize) / 2, sheight * 0.88f, descSize, GREEN);
+}
+
+
 void drawMen(void){
-    int screenWidth = GetScreenWidth();
-    int screenHeight = GetScreenHeight();
-    int centerX = screenWidth / 2;
+    float screenWidth = (float)GetScreenWidth();
+    float screenHeight = (float)GetScreenHeight();
+    float centerX = screenWidth / 2.0f;
+    
+    int tSzie = (int)(screenHeight * 0.04f);
+    int secSize = (int)(screenHeight * 0.035f);
+    int textSize = (int)(screenHeight * 0.025f);
+    int startSize = (int)(screenHeight * 0.025f);
     
     const char *title = "WELCOME TO BLOXORZ";
-    int titleSize = 50;
-    DrawText(title, centerX - MeasureText(title, titleSize) / 2, screenHeight / 6, titleSize, YELLOW);
+    DrawText(title, centerX - MeasureText(title, tSzie) / 2, screenHeight * 0.08f, tSzie, YELLOW);
     
-    int start = screenHeight / 3;
-    const char *rulesTitle = "How to Play:";
-    int ruleSize = 30;
-    DrawText(rulesTitle, centerX - MeasureText(rulesTitle, ruleSize) / 2, start, ruleSize, RAYWHITE);
+    float textst = centerX - (screenWidth * 0.25f);
+    float currentY = screenHeight * 0.25f;
     
-    start += 60;
-    int controlsX = centerX - 200; 
+    const char *ruleSize = "How to Play:";
+    DrawText(ruleSize, textst, currentY, secSize, RAYWHITE);
     
-    const char *controls = "Arrows - Move the block";
-    DrawText(controls, controlsX, start, 22, LIGHTGRAY);
+    currentY += screenHeight * 0.07f;
+    DrawText("Arrows - Move the block", textst, currentY, textSize, LIGHTGRAY);
     
-    start += 40;
-    const char *camera = "W A S D + Mouse - Move camera";
-    DrawText(camera, controlsX, start, 22, LIGHTGRAY);
+    currentY += screenHeight * 0.045f;
+    DrawText("W A S D + Mouse - Move camera", textst, currentY, textSize, LIGHTGRAY);
     
-    start += 40;
-    const char *reset = "R - Reset level    |    P - Pause/Menu";
-    DrawText(reset, controlsX, start, 22, LIGHTGRAY);
+    currentY += screenHeight * 0.045f;
+    DrawText("R - Reset level    |    P - Pause/Menu", textst, currentY, textSize, LIGHTGRAY);
     
-    start += 40;
-    const char *song = "M - Pause or Play Song";
-    DrawText(song, controlsX, start, 22, LIGHTGRAY);
+    currentY += screenHeight * 0.045f;
+    DrawText("M - Pause or Play Song", textst, currentY, textSize, LIGHTGRAY);
 
-    start += 70;
+    currentY += screenHeight * 0.08f;
     const char *tilesTitle = "Tile Types:";
-    DrawText(tilesTitle, centerX - MeasureText(tilesTitle, ruleSize) / 2, start, ruleSize, RAYWHITE);
-    start += 60;
-    int squareSize = 30;
-    int squareX = centerX - 300;
-    DrawRectangle(squareX, start, squareSize, squareSize, GREEN);
-    const char *green = "Target - Stand on this vertically to win";
-    DrawText(green, squareX + squareSize + 20, start + 5, 20, LIGHTGRAY);
+    DrawText(tilesTitle, textst, currentY, secSize, RAYWHITE);
     
-    start += 45;
-    DrawRectangle(squareX, start, squareSize, squareSize, ORANGE);
-    const char *orange = "Weak Tile - Cannot stand vertically here";
-    DrawText(orange, squareX + squareSize + 20, start + 5, 20, LIGHTGRAY);
+    currentY += screenHeight * 0.07f;
+    float squareSize = screenHeight * 0.035f;
+    float textOffset = squareSize + (screenWidth * 0.015f);
     
-    start += 45;
-    DrawRectangle(squareX, start, squareSize, squareSize, SKYBLUE);
-    const char *blue = "Soft Switch - Activates bridges | Can stand any way";
-    DrawText(blue, squareX + squareSize + 20, start + 5, 20, LIGHTGRAY);
+    DrawRectangle(textst, currentY, squareSize, squareSize, GREEN);
+    DrawText("Target - Stand on this vertically to win", textst + textOffset, currentY + (squareSize * 0.15f), textSize, LIGHTGRAY);
+    
+    currentY += screenHeight * 0.055f;
+    DrawRectangle(textst, currentY, squareSize, squareSize, ORANGE);
+    DrawText("Weak Tile - Cannot stand vertically here", textst + textOffset, currentY + (squareSize * 0.15f), textSize, LIGHTGRAY);
+    
+    currentY += screenHeight * 0.055f;
+    DrawRectangle(textst, currentY, squareSize, squareSize, SKYBLUE);
+    DrawText("Soft Switch - Activates bridges | Can stand any way", textst + textOffset, currentY + (squareSize * 0.15f), textSize, LIGHTGRAY);
 
-    start+=45;
-    DrawRectangle(squareX, start, squareSize, squareSize, DARKBLUE);
-    const char *darkblue = "Hard Switch - Activates bridges | Must stand vertically";
-    DrawText(darkblue, squareX + squareSize + 20, start + 5, 20, LIGHTGRAY);
+    currentY += screenHeight * 0.055f;
+    DrawRectangle(textst, currentY, squareSize, squareSize, DARKBLUE);
+    DrawText("Hard Switch - Activates bridges | Must stand vertically", textst + textOffset, currentY + (squareSize * 0.15f), textSize, LIGHTGRAY);
     
-    start += 180;
-    const char *startText = "Press ENTER to Start";
-    int startSize = 32;
-    DrawText(startText, centerX - MeasureText(startText, startSize) / 2, start, startSize, GREEN);
+    const char *startText = "Press ENTER to Select Game Mode";
+    DrawText(startText, centerX - MeasureText(startText, startSize) / 2, screenHeight * 0.88f, startSize, GREEN);
 }
 
-void DrawStatsHUD(GameStats stats) {
-    char moveText[32];
-    char timeText[32];
-    
-    snprintf(moveText, sizeof(moveText), "Moves: %d", stats.currentMoves);
-    snprintf(timeText, sizeof(timeText), "Time: %.1fs", stats.currentTime);
-    
-    DrawText(moveText, GetScreenWidth() - 150, 10, 20, YELLOW);
-    DrawText(timeText, GetScreenWidth() - 150, 35, 20, YELLOW);
+void DrawStatsHUD(GameStats stats, GameMode mode, int currlev) {
+    char timeText[64];
+    char moveText[64];
+    const char *diffText = "";
+    Color diffColor;
+    char levT[32];
+    snprintf(levT, sizeof(levT), "Level %d", currlev);
+    DrawText(levT, 25, 10, 22, WHITE);
+
+    int screenWidth = GetScreenWidth();
+
+    switch (mode.Diff){
+        case NORMAL:
+            diffText = "NORMAL MODE";
+            diffColor = YELLOW;
+            break;
+        case MEDIUM:
+            diffText = "MEDIUM MODE";
+            diffColor = ORANGE;
+            break;
+        case HARD:
+            diffText = "HARD MODE";
+            diffColor = RED;
+            break;
+    }
+
+    DrawText(diffText, screenWidth - 250, 15, 22, diffColor);
+
+    if (mode.Diff == NORMAL){
+        snprintf(moveText, sizeof(moveText), "Moves: %d", stats.currentMoves);
+        snprintf(timeText, sizeof(timeText), "Time: %.1fs", stats.currentTime);
+
+        DrawText(moveText, screenWidth - 250, 50, 20, YELLOW);
+        DrawText(timeText, screenWidth - 250, 75, 20, YELLOW);
+        return;
+    }
+
+    const LevLimits *constraints = (mode.Diff == MEDIUM) ? &mediumMode[currlev] : &hardMode[currlev];
+
+    int movesLeft = constraints->moveLimit - stats.currentMoves;
+    Color moveColor = (movesLeft <= 5) ? RED : (movesLeft <= 10) ? ORANGE :WHITE;
+    snprintf(moveText, sizeof(moveText), "Moves: %d / %d", stats.currentMoves, constraints->moveLimit);
+    DrawText(moveText, screenWidth - 250, 50, 20, moveColor);
+
+    float timeLeft = constraints->timeLimit - stats.currentTime;
+    Color timeColor = (timeLeft <= 10.0f) ? RED : (timeLeft <= 20.0f) ?ORANGE : WHITE;
+    snprintf(timeText, sizeof(timeText), "Time: %.1f / %.1f", stats.currentTime, constraints->timeLimit);
+    DrawText(timeText, screenWidth - 250, 80, 20, timeColor);
 }
+
 
 void DrawFinalStatsScreen(GameStats stats) {
     int screenWidth = GetScreenWidth();
@@ -126,8 +221,8 @@ void DrawFinalStatsScreen(GameStats stats) {
     DrawRectangle(0, 0, screenWidth, screenHeight, (Color){0, 0, 0, 200});
     
     const char *title = "CONGRATULATIONS! ALL LEVELS COMPLETED!";
-    int titleSize = 30;
-    DrawText(title, (screenWidth - MeasureText(title, titleSize)) / 2, 50, titleSize, GOLD);
+    int tSzie = 30;
+    DrawText(title, (screenWidth - MeasureText(title, tSzie)) / 2, 50, tSzie, GOLD);
     
     const char *statsHeader = "YOUR PERFORMANCE:";
     int headerSize = 25;
@@ -136,8 +231,8 @@ void DrawFinalStatsScreen(GameStats stats) {
     int bestTotalMoves = 0;
     float bestTotalTime = 0.0f;
     
-    for (int i = 0; i < LEVEL_COUNT; i++) {
-        if (stats.levels[i].moves != -1) {
+    for (int i = 0; i < LEVEL_COUNT; i++){
+        if (stats.levels[i].moves != -1){
             bestTotalMoves += stats.levels[i].moves;
             bestTotalTime += stats.levels[i].time;
         }
@@ -165,7 +260,7 @@ void DrawFinalStatsScreen(GameStats stats) {
             
             DrawText(movesText, 330, y, 18, YELLOW);
             DrawText(timeText, 530, y, 18, YELLOW);
-        } else {
+        } else{
             DrawText("---", 330, y, 18, GRAY);
             DrawText("---", 530, y, 18, GRAY);
         }

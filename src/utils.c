@@ -1,4 +1,26 @@
 #include "../inc/Define.h"
+void applymode(GameMode *mode){
+    switch(mode->Diff)
+    {
+        case NORMAL:
+            mode->boxspeedMult = 1.0f;
+            mode->allowCamControl = true;
+            mode->randomCam = false;
+            break;
+
+        case MEDIUM:
+            mode->boxspeedMult = 1.3f;
+            mode->allowCamControl = true;
+            mode->randomCam = false;
+            break;
+
+        case HARD:
+            mode->boxspeedMult = 1.5f;
+            mode->allowCamControl = false;
+            mode->randomCam = true;
+            break;
+    }
+}
 
 void toggleBridge(Map *map, char bridgeId){
     for (int z = 0; z < map->height; z++)
@@ -139,3 +161,40 @@ void exportState(GameStats stats) {
     
     fclose(file);
 }
+
+
+
+Vector3 vector3cus(Vector3 a, Vector3 b, float t){
+    return (Vector3){a.x + (b.x - a.x) * t,a.y + (b.y - a.y) * t,a.z + (b.z - a.z) * t};
+}
+
+
+void updateCamT(Camera3D *cam, CamTrans *ct, float mapCenterX,float mapCenterZ){
+    if (!ct->active)
+        return;
+
+    ct->t += GetFrameTime() * 2.0f;
+
+    if (ct->t >= 1.0f) {
+        ct->t = 1.0f;
+        ct->active = false;
+    }
+
+    cam->position = vector3cus(ct->startPos, ct->targetPos, ct->t);
+    cam->target   = (Vector3){ mapCenterX, 0.0f, mapCenterZ };
+}
+
+void randomCam(Camera3D *cam, CamTrans *ct, float mapCenterX, float mapCenterZ, float maxDim){
+    float radius = maxDim * 1.4f;
+
+    float angle = GetRandomValue(0, 360) * DEG2RAD;
+    float height = GetRandomValue(60, 140) / 5.0f;
+
+    ct->startPos = cam->position;
+    ct->targetPos = (Vector3){mapCenterX + cosf(angle) * radius, height, mapCenterZ + sinf(angle) * radius};
+
+    ct->t = 0.0f;
+    ct->duration = 100.9f; 
+    ct->active = true;
+}
+
