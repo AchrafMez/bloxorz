@@ -12,8 +12,9 @@ and but what makes the puzzle more challenging is to win with the minimum moves 
 
 **Features:**
 - 13 challenging levels with progressive difficulty
-- Multiple tile types: target tiles, weak tiles, and switches
-- Statistics tracking for speedruns (moves and time)
+- **NORMAL MODE :** No restrictions, Full camera control.
+- **MEDIUM MODE :** Time and move limits, Faster block movement, Full camera control.
+- **HARD MODE :** time and move limits, Faster block movement, NO camera control, Random camera angle on each move.
 
 ## Controls
 
