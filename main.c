@@ -104,8 +104,6 @@ int main(void){
         }
         else if (state == STATE_PLAYING){
             ClearBackground(BLACK);
-            if(IsKeyPressed(KEY_N))
-                won = true;
             if (IsKeyPressed(KEY_P))
                 state = STATE_MENU;
             if (!fail && !won && !block.mov)
