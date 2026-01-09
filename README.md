@@ -65,7 +65,7 @@ Design new levels using the text format in `levels/` directory.
 ```bash
 git clone https://github.com/AchrafMez/bloxorz.git
 cd bloxorz
-make run
+make 
 ```
 you can run `make help` to see all make commands
 
