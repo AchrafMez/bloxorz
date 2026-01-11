@@ -17,7 +17,8 @@ typedef enum{
     STATE_MENU,
     STATE_PLAYING,
     STATE_FINAL,
-    STATE_MODE
+    STATE_MODE,
+    PAUSE
 } GameState;
 
 typedef enum{
@@ -174,6 +175,7 @@ void drawMen(void);
 void DrawDiffMenu(GameMode *mode);
 void DrawStatsHUD(GameStats stats, GameMode mode, int currentLevel);
 void DrawFinalStatsScreen(GameStats stats);
+void drawPauseMen(void);
 
 //---------STATS--------
 void initState(GameStats *stats);

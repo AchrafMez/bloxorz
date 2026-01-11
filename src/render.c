@@ -105,6 +105,65 @@ void DrawDiffMenu(GameMode *mode){
 }
 
 
+
+void drawPauseMen(void){
+    float screenWidth = (float)GetScreenWidth();
+    float screenHeight = (float)GetScreenHeight();
+    float centerX = screenWidth / 2.0f;
+    
+    int tSzie = (int)(screenHeight * 0.04f);
+    int secSize = (int)(screenHeight * 0.035f);
+    int textSize = (int)(screenHeight * 0.025f);
+    int startSize = (int)(screenHeight * 0.025f);
+    
+    const char *title = "WELCOME TO BLOXORZ";
+    DrawText(title, centerX - MeasureText(title, tSzie) / 2, screenHeight * 0.08f, tSzie, YELLOW);
+    
+    float textst = centerX - (screenWidth * 0.25f);
+    float currentY = screenHeight * 0.25f;
+    
+    const char *ruleSize = "How to Play:";
+    DrawText(ruleSize, textst, currentY, secSize, RAYWHITE);
+    
+    currentY += screenHeight * 0.07f;
+    DrawText("Arrows - Move the block", textst, currentY, textSize, LIGHTGRAY);
+    
+    currentY += screenHeight * 0.045f;
+    DrawText("W A S D + Mouse - Move camera", textst, currentY, textSize, LIGHTGRAY);
+    
+    currentY += screenHeight * 0.045f;
+    DrawText("R - Reset level    |    P - Pause/Menu", textst, currentY, textSize, LIGHTGRAY);
+    
+    currentY += screenHeight * 0.045f;
+    DrawText("M - Pause or Play Song", textst, currentY, textSize, LIGHTGRAY);
+
+    currentY += screenHeight * 0.08f;
+    const char *tilesTitle = "Tile Types:";
+    DrawText(tilesTitle, textst, currentY, secSize, RAYWHITE);
+    
+    currentY += screenHeight * 0.07f;
+    float squareSize = screenHeight * 0.035f;
+    float textOffset = squareSize + (screenWidth * 0.015f);
+    
+    DrawRectangle(textst, currentY, squareSize, squareSize, GREEN);
+    DrawText("Target - Stand on this vertically to win", textst + textOffset, currentY + (squareSize * 0.15f), textSize, LIGHTGRAY);
+    
+    currentY += screenHeight * 0.055f;
+    DrawRectangle(textst, currentY, squareSize, squareSize, ORANGE);
+    DrawText("Weak Tile - Cannot stand vertically here", textst + textOffset, currentY + (squareSize * 0.15f), textSize, LIGHTGRAY);
+    
+    currentY += screenHeight * 0.055f;
+    DrawRectangle(textst, currentY, squareSize, squareSize, SKYBLUE);
+    DrawText("Soft Switch - Activates bridges | Can stand any way", textst + textOffset, currentY + (squareSize * 0.15f), textSize, LIGHTGRAY);
+
+    currentY += screenHeight * 0.055f;
+    DrawRectangle(textst, currentY, squareSize, squareSize, DARKBLUE);
+    DrawText("Hard Switch - Activates bridges | Must stand vertically", textst + textOffset, currentY + (squareSize * 0.15f), textSize, LIGHTGRAY);
+    
+    const char *startText = "Press P to resume";
+    DrawText(startText, centerX - MeasureText(startText, startSize) / 2, screenHeight * 0.88f, startSize, GREEN);
+}
+
 void drawMen(void){
     float screenWidth = (float)GetScreenWidth();
     float screenHeight = (float)GetScreenHeight();

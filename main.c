@@ -16,7 +16,7 @@ int main(void){
     InitAudioDevice();
     Music bgm = LoadMusicStream("./assets/theme.mp3");
     bgm.looping = true;
-    SetMusicVolume(bgm, 0.2f);
+    SetMusicVolume(bgm, 0.3f);
     PlayMusicStream(bgm);
     // Sound move = LoadSound("/Users/amezioun/Desktop/bloxorz/assets/move.wav");
     // SetSoundVolume(move, 0.3f);
@@ -102,10 +102,15 @@ int main(void){
 
             DrawDiffMenu(&gameMode);
         }
+        else if(state == PAUSE){
+            drawPauseMen();
+            if(IsKeyPressed(KEY_P))
+                state = STATE_PLAYING;   
+        }
         else if (state == STATE_PLAYING){
             ClearBackground(BLACK);
             if (IsKeyPressed(KEY_P))
-                state = STATE_MENU;
+                state = PAUSE;
             if (!fail && !won && !block.mov)
                 UpdateTime(&stats, dt);
 
